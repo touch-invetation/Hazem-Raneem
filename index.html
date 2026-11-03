@@ -1447,7 +1447,7 @@ document.getElementById('again').addEventListener('click',function(){th.hidden=t
 })();
 
 (function(){
-var MUSIC='';  // ضع هنا رابط أو data:audio/mpeg;base64,... للموسيقى
+var MUSIC='./ام كلثوم _ الليل وسماه ونجومه وقمره _اغنية الف ليلة وليلة _Umm Kulthum.mp3';  // ضع هنا رابط أو data:audio/mpeg;base64,... للموسيقى
 var a=document.getElementById('bgm'),b=document.getElementById('mus'),on=false;
 if(MUSIC)a.src=MUSIC;
 function set(v){on=v;b.classList.toggle('on',v);b.setAttribute('aria-label',v?'إيقاف الموسيقى':'تشغيل الموسيقى');if(v){if(a.getAttribute('src')){var p=a.play();if(p&&p.catch)p.catch(function(){set(false)})}}else a.pause()}
