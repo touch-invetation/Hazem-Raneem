@@ -1,26 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" class="lock"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>الدعوة حازم و رنيم</title>
-<meta name="description" content="حازم ⁠♡ رنيم">
-
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:url" content="https://touch-invetation.github.io/Hazem-Raneem/" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Wedding Invitation" />
-    <meta property="og:image" content="https://touch-invetation.github.io/Hazem-Raneem/love-letter.png" />
-    <meta property="og:image:secure_url" content="https://touch-invetation.github.io/Hazem-Raneem/love-letter.png" />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="512" />
-    <meta property="og:image:height" content="512" />
-
-    <!-- Twitter Meta Tags -->
-    <meta name="twitter:card" content="summary" />
-    <meta property="twitter:domain" content="touch-invetation.github.io" />
-    <meta property="twitter:url" content="https://touch-invetation.github.io/Hazem-Raneem/" />
-    <meta name="twitter:title" content="Wedding Invitation" />
-    <meta name="twitter:image" content="https://touch-invetation.github.io/Hazem-Raneem/love-letter.png" />
-
+<title>الدعوة – رسمة تنرسم بالخطوط</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{--page:#cfc8ba;--ink:#6f7a52;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -1441,14 +1422,24 @@ input,button{accent-color:var(--green-accent)}
 <script>
 (function(){var s=document.querySelector('.stage');function f(){s.style.setProperty('--w',s.clientWidth+'px')}f();addEventListener('resize',f);})();
 var cal=document.getElementById('cal'),more=document.getElementById('more'),tm=null;
-function sched(){clearTimeout(tm);tm=setTimeout(function(){document.documentElement.classList.remove('lock');more.classList.add('show');requestAnimationFrame(function(){if((window.pageYOffset||document.documentElement.scrollTop||0)<10){var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;var y0=window.pageYOffset,y1=cal.getBoundingClientRect().top+y0;if(rm){window.scrollTo(0,y1)}else{var D=5000,t0=null,stop=false,ev=['wheel','touchstart','mousedown','keydown'],cancel=function(){stop=true};ev.forEach(function(n){window.addEventListener(n,cancel,{passive:true,once:true})});(function step(t){if(stop)return;if(t0===null)t0=t;var k=Math.min(1,(t-t0)/D),e=0.5-Math.cos(Math.PI*k)/2;window.scrollTo(0,y0+(y1-y0)*e);if(k<1)requestAnimationFrame(step);else ev.forEach(function(n){window.removeEventListener(n,cancel)})})(performance.now())}}})},25200)}
+var flowTok=0;
+function readyMs(el){if(el.id==='rsvpsec')return 6500;var m=0;el.querySelectorAll('[style*="--d"]').forEach(function(n){var st=n.getAttribute('style'),d=/--d:\s*([\d.]+)s/.exec(st),t=/--t:\s*([\d.]+)s/.exec(st);if(d){var v=parseFloat(d[1])+(t?parseFloat(t[1]):1.2);if(v>m)m=v}});return Math.min(m,14)*1000}
+function startFlow(){var tok=++flowTok,off=false,rm=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches,
+list=['cal','swans','loc','rsvpsec','endsec'].map(function(i){return document.getElementById(i)}).filter(Boolean),evs=['wheel','touchstart','mousedown','keydown','focusin'];
+function dead(){return off||tok!==flowTok}
+function cancel(e){if(e&&e.target&&e.target.closest&&e.target.closest('#mus,#more'))return;off=true;evs.forEach(function(n){removeEventListener(n,cancel)})}
+evs.forEach(function(n){addEventListener(n,cancel,{passive:true})});
+function wait(ms){return new Promise(function(r){setTimeout(r,ms)})}
+function slow(y1){return new Promise(function(res){var y0=window.pageYOffset,mx=document.documentElement.scrollHeight-innerHeight;y1=Math.max(0,Math.min(y1,mx));if(rm||Math.abs(y1-y0)<2){window.scrollTo(0,y1);return res()}var D=Math.max(2200,Math.min(6500,Math.abs(y1-y0)/.18)),t0=null;function step(t){if(dead())return res();if(t0===null)t0=t;var k=Math.min(1,(t-t0)/D),e=.5-Math.cos(Math.PI*k)/2;window.scrollTo(0,y0+(y1-y0)*e);if(k<1)requestAnimationFrame(step);else res()}requestAnimationFrame(step)})}
+(async function(){for(var i=0;i<list.length;i++){var el=list[i];await slow(el.getBoundingClientRect().top+window.pageYOffset);if(dead())return;if(i===list.length-1)break;if(!el.classList.contains('show')){el.classList.add('show');el._st=performance.now()}var st=el._st||performance.now(),need=readyMs(el)-(performance.now()-st);await wait(Math.max(0,need)+1200);if(dead())return}evs.forEach(function(n){removeEventListener(n,cancel)})})()}
+function sched(){clearTimeout(tm);tm=setTimeout(function(){document.documentElement.classList.remove('lock');more.classList.add('show');requestAnimationFrame(function(){if((window.pageYOffset||document.documentElement.scrollTop||0)<10)startFlow()})},25200)}
 more.addEventListener('click',function(){cal.scrollIntoView({behavior:'smooth'})});
-var cals=document.querySelectorAll('.cal,.rv');if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}})},{threshold:.3});cals.forEach(function(c){io.observe(c)})}else{cals.forEach(function(c){c.classList.add('show')})}
+var cals=document.querySelectorAll('.cal,.rv');if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('show');e.target._st=performance.now();io.unobserve(e.target)}})},{threshold:.3});cals.forEach(function(c){io.observe(c)})}else{cals.forEach(function(c){c.classList.add('show')})}
 document.getElementById('intro').addEventListener('click',function(){var i=this;if(i.classList.contains('done'))return;i.classList.add('open');setTimeout(function(){i.classList.add('lift')},6000);setTimeout(function(){document.getElementById('card').classList.remove('paused');i.classList.add('done');sched()},10800);});
 
 (function(){
 var WA='';  // (اختياري) رقم واتساب العرسان بصيغة دولية بدون + (مثال: 971501234567)، يُستخدم فقط إذا لم يُضبط فايربيس
-var FIREBASE={apiKey:'AIzaSyBxzEKOQ8NrNqgeJp1XePLEsbEKXdXHla4',projectId:'my-wedding-cards',collection:'rsvp_hazem_raneem'};  // ضعي هنا apiKey و projectId من إعدادات مشروعكم في Firebase (Firestore)
+var FIREBASE={apiKey:'',projectId:'',collection:'rsvp_hazem_raneem'};  // ضعي هنا apiKey و projectId من إعدادات مشروعكم في Firebase (Firestore)
 var KEY='rsvp_hr',FB=!!(FIREBASE.apiKey&&FIREBASE.projectId);
 var f=document.getElementById('rsvp'),g=document.getElementById('guests'),cnt=document.getElementById('cnt'),err=document.getElementById('err'),th=document.getElementById('thanks'),btn=document.getElementById('go'),again=document.getElementById('again');
 if(FB)again.style.display='none';
@@ -1479,7 +1470,7 @@ again.addEventListener('click',function(){th.hidden=true;f.style.display='flex'}
 })();
 
 (function(){
-var MUSIC='./ام كلثوم _ الليل وسماه ونجومه وقمره _اغنية الف ليلة وليلة _Umm Kulthum.mp3';  // ضع هنا رابط أو data:audio/mpeg;base64,... للموسيقى
+var MUSIC='';  // ضع هنا رابط أو data:audio/mpeg;base64,... للموسيقى
 var a=document.getElementById('bgm'),b=document.getElementById('mus'),on=false;
 if(MUSIC)a.src=MUSIC;
 function set(v){on=v;b.classList.toggle('on',v);b.setAttribute('aria-label',v?'إيقاف الموسيقى':'تشغيل الموسيقى');if(v){if(a.getAttribute('src')){var p=a.play();if(p&&p.catch)p.catch(function(){set(false)})}}else a.pause()}
