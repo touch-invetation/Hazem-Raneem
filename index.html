@@ -1439,7 +1439,7 @@ document.getElementById('intro').addEventListener('click',function(){var i=this;
 
 (function(){
 var WA='';  // (اختياري) رقم واتساب العرسان بصيغة دولية بدون + (مثال: 971501234567)، يُستخدم فقط إذا لم يُضبط فايربيس
-var FIREBASE={apiKey:'',projectId:'',collection:'rsvp_hazem_raneem'};  // ضعي هنا apiKey و projectId من إعدادات مشروعكم في Firebase (Firestore)
+var FIREBASE={apiKey:'AIzaSyBxzEKOQ8NrNqgeJp1XePLEsbEKXdXHla4',projectId:'my-wedding-cards',collection:'rsvp_hazem_raneem'};  // ضعي هنا apiKey و projectId من إعدادات مشروعكم في Firebase (Firestore)
 var KEY='rsvp_hr',FB=!!(FIREBASE.apiKey&&FIREBASE.projectId);
 var f=document.getElementById('rsvp'),g=document.getElementById('guests'),cnt=document.getElementById('cnt'),err=document.getElementById('err'),th=document.getElementById('thanks'),btn=document.getElementById('go'),again=document.getElementById('again');
 if(FB)again.style.display='none';
@@ -1470,7 +1470,7 @@ again.addEventListener('click',function(){th.hidden=true;f.style.display='flex'}
 })();
 
 (function(){
-var MUSIC='';  // ضع هنا رابط أو data:audio/mpeg;base64,... للموسيقى
+var MUSIC='./ام كلثوم _ الليل وسماه ونجومه وقمره _اغنية الف ليلة وليلة _Umm Kulthum.mp3';  // ضع هنا رابط أو data:audio/mpeg;base64,... للموسيقى
 var a=document.getElementById('bgm'),b=document.getElementById('mus'),on=false;
 if(MUSIC)a.src=MUSIC;
 function set(v){on=v;b.classList.toggle('on',v);b.setAttribute('aria-label',v?'إيقاف الموسيقى':'تشغيل الموسيقى');if(v){if(a.getAttribute('src')){var p=a.play();if(p&&p.catch)p.catch(function(){set(false)})}}else a.pause()}
