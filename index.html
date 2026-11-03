@@ -1428,22 +1428,35 @@ var cals=document.querySelectorAll('.cal,.rv');if('IntersectionObserver' in wind
 document.getElementById('intro').addEventListener('click',function(){var i=this;if(i.classList.contains('done'))return;i.classList.add('open');setTimeout(function(){i.classList.add('lift')},6000);setTimeout(function(){document.getElementById('card').classList.remove('paused');i.classList.add('done');sched()},10800);});
 
 (function(){
-var WA='';  // رقم واتساب العرسان بصيغة دولية بدون + (مثال: 971501234567)
-var f=document.getElementById('rsvp'),g=document.getElementById('guests'),cnt=document.getElementById('cnt'),err=document.getElementById('err'),th=document.getElementById('thanks');
+var WA='';  // (اختياري) رقم واتساب العرسان بصيغة دولية بدون + (مثال: 971501234567)، يُستخدم فقط إذا لم يُضبط فايربيس
+var FIREBASE={apiKey:'AIzaSyBxzEKOQ8NrNqgeJp1XePLEsbEKXdXHla4',projectId:'my-wedding-cards',collection:'rsvp_hazem_raneem'};  // ضعي هنا apiKey و projectId من إعدادات مشروعكم في Firebase (Firestore)
+var KEY='rsvp_hr',FB=!!(FIREBASE.apiKey&&FIREBASE.projectId);
+var f=document.getElementById('rsvp'),g=document.getElementById('guests'),cnt=document.getElementById('cnt'),err=document.getElementById('err'),th=document.getElementById('thanks'),btn=document.getElementById('go'),again=document.getElementById('again');
+if(FB)again.style.display='none';
+function docs(id){return 'https://firestore.googleapis.com/v1/projects/'+encodeURIComponent(FIREBASE.projectId)+'/databases/(default)/documents/'+encodeURIComponent(FIREBASE.collection||'rsvp_hazem_raneem')+(id?'/'+encodeURIComponent(id):'')}
+function mkId(n){return n.toLowerCase().replace(/\s+/g,' ').replace(/\//g,'-').slice(0,120)}
+function remember(n,y,id){try{localStorage.setItem(KEY,JSON.stringify({n:n,y:y,id:id}))}catch(_){}}
 f.addEventListener('change',function(e){if(e.target.name==='a'){g.classList.toggle('on',e.target.value==='yes');err.textContent=''}});
- function done(name,yes){document.getElementById('tt').textContent=(yes?'شكراً لك يا ':'جزاك الله خيراً يا ')+name;document.getElementById('tp').textContent=yes?'نتشرف بحضورك ونسعد بمشاركتك فرحتنا.':'شكراً لإعلامنا بردّك.';f.style.display='none';th.hidden=false;th.scrollIntoView({behavior:'smooth',block:'center'})}
+function done(name,yes,quiet){document.getElementById('tt').textContent=(yes?'شكراً لك يا ':'جزاك الله خيراً يا ')+name;document.getElementById('tp').textContent=yes?'نتشرف بحضورك ونسعد بمشاركتك فرحتنا.':'شكراً لإعلامنا بردّك.';f.style.display='none';th.hidden=false;if(!quiet)th.scrollIntoView({behavior:'smooth',block:'center'})}
+try{if(/[?&]reset\b/.test(location.search))localStorage.removeItem(KEY);var sv=JSON.parse(localStorage.getItem(KEY)||'null');
+if(sv&&sv.n&&FB){sv.id=sv.id||mkId(sv.n);fetch(docs(sv.id)+'?key='+encodeURIComponent(FIREBASE.apiKey)).then(function(r){if(r.status===404){try{localStorage.removeItem(KEY)}catch(_){}}else{done(sv.n,sv.y,true)}}).catch(function(){done(sv.n,sv.y,true)})}}catch(_){}
 f.addEventListener('submit',function(e){
  e.preventDefault();
-  var name=document.getElementById('fn').value.trim(),a=f.querySelector('input[name=a]:checked');
- if(!name){err.textContent='اكتب اسمك من فضلك';return}
+ var name=document.getElementById('fn').value.trim(),a=f.querySelector('input[name=a]:checked');
+ if(name.length<2){err.textContent='اكتب اسمك من فضلك';return}
  if(!a){err.textContent='اختر إذا كنت ستحضر أو لا';return}
- var yes=a.value==='yes';err.textContent='';
-  var msg='السلام عليكم، أنا '+name+'\n'+(yes?'تأكيد الحضور: سأحضر بإذن الله، العدد: '+Number(cnt.value || 1):'أعتذر عن الحضور');
-  if(WA){window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank','noopener');done(name,yes);return}
-  if(navigator.share){navigator.share({text:msg}).then(function(){done(name,yes)}).catch(function(){});return}
-  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(msg).then(function(){done(name,yes)},function(){done(name,yes)})}else done(name,yes);
+ var yes=a.value==='yes',count=yes?Number(cnt.value||1):0;err.textContent='';
+ if(FB){var id=mkId(name);btn.disabled=true;
+  fetch(docs()+'?documentId='+encodeURIComponent(id)+'&key='+encodeURIComponent(FIREBASE.apiKey),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{name:{stringValue:name},status:{stringValue:yes?'Attending':'Not attending'},guestsCount:{integerValue:String(count)},createdAt:{timestampValue:new Date().toISOString()}}})})
+  .then(function(r){if(r.status===409){btn.disabled=false;err.textContent='وصلنا ردّ بهذا الاسم مسبقاً. إذا بدك تعدّل ردّك تواصل معنا.';return}if(!r.ok)throw new Error(r.status);btn.disabled=false;remember(name,yes,id);done(name,yes)})
+  .catch(function(){btn.disabled=false;err.textContent='عذراً، ما قدرنا نرسل ردّك. جرّب مرة ثانية.'});
+  return}
+ var msg='السلام عليكم، أنا '+name+'\n'+(yes?'تأكيد الحضور: سأحضر بإذن الله، العدد: '+count:'أعتذر عن الحضور');
+ if(WA){window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank','noopener');done(name,yes);return}
+ if(navigator.share){navigator.share({text:msg}).then(function(){done(name,yes)}).catch(function(){});return}
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(msg).then(function(){done(name,yes)},function(){done(name,yes)})}else done(name,yes);
 });
-document.getElementById('again').addEventListener('click',function(){th.hidden=true;f.style.display='flex'});
+again.addEventListener('click',function(){th.hidden=true;f.style.display='flex'});
 })();
 
 (function(){
